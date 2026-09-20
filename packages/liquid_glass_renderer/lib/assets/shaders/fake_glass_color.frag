@@ -24,7 +24,7 @@ void main() {
     vec2 fragCoord = FlutterFragCoord().xy;
     vec2 uv = fragCoord / uSize;
 
-    #ifdef IMPELLER_TARGET_OPENGLES
+    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
         uv.y = 1.0 - uv.y;
     #endif
 

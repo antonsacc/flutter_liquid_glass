@@ -45,7 +45,7 @@ void main() {
      
     // We invert screenUV Y on OpenGL to sample the textures correctly
     // fragCoord stays the same so shape positions are correct.
-    #ifdef IMPELLER_TARGET_OPENGLES
+    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
         vec2 screenUV = vec2(fragCoord.x / uSize.x, 1.0 - (fragCoord.y / uSize.y));
     #else
         vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);

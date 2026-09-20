@@ -198,7 +198,7 @@ void main() {
     vec4 blurred = texture(uForegroundBlurredTexture, layerUV);
     float sd = approximateSDF(blurred.a, uThickness);
     
-#ifdef IMPELLER_TARGET_OPENGLES
+#if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
     // Convert flipped layerUV back to layer-local coordinates for normal calculation
     transformedCoord.xy = layerUV * uForegroundSize;
 #endif
