@@ -25,7 +25,7 @@ layout(location = 0) out vec4 fragColor;
 void main() {
     vec2 fragCoord = FlutterFragCoord().xy;
     
-    #ifdef IMPELLER_TARGET_OPENGLES
+    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
         vec2 screenUV = vec2(fragCoord.x / uSize.x, 1.0 - (fragCoord.y / uSize.y));
     #else
         vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);

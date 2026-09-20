@@ -41,12 +41,12 @@ void main() {
     
     vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);        
         
-    #ifdef IMPELLER_TARGET_OPENGLES
+    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
         screenUV.y = 1.0 - screenUV.y;
     #endif
 
     vec2 geometryUV = (fragCoord - uGeometryOffset) / uGeometrySize;
-    #ifdef IMPELLER_TARGET_OPENGLES
+    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
         geometryUV.y = 1.0 - geometryUV.y;
     #endif
 
