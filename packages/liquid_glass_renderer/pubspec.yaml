@@ -42,8 +42,19 @@ dev_dependencies:
   mocktail: ^1.0.3
 
 flutter:
+  # Not bundled for web. impellerc in Flutter 3.4x validates the SkSL it generates,
+  # three of these shaders produce invalid SkSL (array parameters in sdf.glsl, a
+  # non-constant loop initialiser in liquid_glass_arbitrary.frag), and for web SkSL
+  # is the only target, so `flutter build web` fails outright. Web renders fake
+  # glass and never loads them. On every other platform the tool retries without
+  # SkSL and only warns. Map-style entries need a Flutter 3.4x tool: 3.38 accepts
+  # strings only and would drop the shaders.
   shaders:
-    - lib/assets/shaders/liquid_glass_geometry_blended.frag
-    - lib/assets/shaders/liquid_glass_filter.frag
-    - lib/assets/shaders/liquid_glass_arbitrary.frag
-    - lib/assets/shaders/liquid_glass_final_render.frag
+    - path: lib/assets/shaders/liquid_glass_geometry_blended.frag
+      platforms: [android, ios, macos, windows, linux]
+    - path: lib/assets/shaders/liquid_glass_filter.frag
+      platforms: [android, ios, macos, windows, linux]
+    - path: lib/assets/shaders/liquid_glass_arbitrary.frag
+      platforms: [android, ios, macos, windows, linux]
+    - path: lib/assets/shaders/liquid_glass_final_render.frag
+      platforms: [android, ios, macos, windows, linux]
