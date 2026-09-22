@@ -10,17 +10,13 @@ mat2 rotate2d(float angle) {
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-// Compute Y coordinate, reversing it for the OpenGL ES backend on engines that
-// still store render-target textures bottom-up. Since Flutter 3.46 Impeller
-// stores them top-down on OpenGL ES too (like Metal and Vulkan) and defines
-// IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED, so the flip must not be applied there:
+// Compute Y coordinate. Impeller has stored render-target textures top-down on
+// every backend since Flutter 3.46 (Metal, Vulkan and OpenGL ES alike), so no
+// per-backend flip is needed. Older engines flipped Y on OpenGL ES; this fork
+// requires Flutter >= 3.47 and dropped that path on purpose:
 // https://docs.flutter.dev/release/breaking-changes/opengles-render-to-texture-top-down
 float computeY(float coordY, vec2 size) {
-    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
-        return 1.0 - (coordY / size.y);
-    #else
-        return coordY / size.y;
-    #endif
+    return coordY / size.y;
 }
 
 

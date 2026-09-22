@@ -41,14 +41,10 @@ void main() {
     
     vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);        
         
-    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
-        screenUV.y = 1.0 - screenUV.y;
-    #endif
+    // Render targets are top-down on every Impeller backend since Flutter 3.46,
+    // so neither screenUV nor geometryUV needs a per-backend Y flip.
 
     vec2 geometryUV = (fragCoord - uGeometryOffset) / uGeometrySize;
-    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
-        geometryUV.y = 1.0 - geometryUV.y;
-    #endif
 
     vec4 geometryData = texture(uGeometryTexture, geometryUV);
     

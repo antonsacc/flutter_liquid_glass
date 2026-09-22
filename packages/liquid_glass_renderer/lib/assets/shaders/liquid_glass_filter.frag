@@ -43,13 +43,9 @@ layout(location = 0) out vec4 fragColor;
 void main() {
     vec2 fragCoord = FlutterFragCoord().xy;
      
-    // We invert screenUV Y on OpenGL to sample the textures correctly
-    // fragCoord stays the same so shape positions are correct.
-    #if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
-        vec2 screenUV = vec2(fragCoord.x / uSize.x, 1.0 - (fragCoord.y / uSize.y));
-    #else
-        vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);
-    #endif
+    // Render targets are top-down on every Impeller backend since Flutter 3.46,
+    // so screenUV needs no per-backend Y flip.
+    vec2 screenUV = vec2(fragCoord.x / uSize.x, fragCoord.y / uSize.y);
     
     // Generate shape and calculate normal using shader-specific method
     float sd = sceneSDF(fragCoord, int(uNumShapes), uShapeData, uBlend);

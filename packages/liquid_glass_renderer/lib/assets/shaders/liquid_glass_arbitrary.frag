@@ -198,10 +198,8 @@ void main() {
     vec4 blurred = texture(uForegroundBlurredTexture, layerUV);
     float sd = approximateSDF(blurred.a, uThickness);
     
-#if defined(IMPELLER_TARGET_OPENGLES) && !defined(IMPELLER_OPENGLES_UNFLIPPED_DEPRECATED)
-    // Convert flipped layerUV back to layer-local coordinates for normal calculation
-    transformedCoord.xy = layerUV * uForegroundSize;
-#endif
+    // layerUV is not flipped on any Impeller backend since Flutter 3.46, so
+    // transformedCoord already holds the layer-local coordinates for the normal.
     vec3 normal = getNormal(transformedCoord.xy, uThickness);
     
     // Use shared rendering pipeline to get the glass color
